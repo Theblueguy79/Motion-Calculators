@@ -1,0 +1,107 @@
+import tkinter as tk
+
+# Create main window
+root = tk.Tk()
+root.title("Square Example")
+text = "o"
+# Create canvas
+#canvas = tk.Canvas(root, width=400, height=400, bg="white")
+#canvas.grid(row=1, column=0, columnspan=2, padx=10, pady=10)
+
+# Button click functions
+def button_s_clicked():
+    global text
+    text = f"{text}S \n"
+    label.config(text=text)
+
+def button_u_clicked():
+    global text
+    text = f"{text}U \n"
+    label.config(text=text)
+
+def button_v_clicked():
+    global text
+    text = f"{text}V \n"
+    label.config(text=text)
+
+def button_a_clicked():
+    global text
+    text = f"{text}A \n"
+    label.config(text=text)
+
+def button_t_clicked():
+    global text
+    text = f"{text}T \n"
+    label.config(text=text)
+
+def button_one_clicked():
+    global text
+    text = f"{text}1"
+    label.config(text=text)
+
+def button_two_clicked():
+    global text
+    text = f"{text}2"
+    label.config(text=text)
+
+def button_three_clicked():
+    global text
+    text = f"{text}3"
+    label.config(text=text)
+
+def button_four_clicked():
+    global text
+    text = f"{text}4"
+    label.config(text=text)
+
+def button_five_clicked():
+    global text
+    text = f"{text}5"
+    label.config(text=text)
+def clear():
+    global text
+    text = ""
+    label.config(text=text)
+
+button_s = tk.Button(root, text="S", command=button_s_clicked)
+button_u = tk.Button(root, text="U", command=button_u_clicked)
+button_v = tk.Button(root, text="V", command=button_v_clicked)
+button_a = tk.Button(root, text="A", command=button_a_clicked)
+button_t = tk.Button(root, text="T", command=button_t_clicked)
+
+button_one = tk.Button(root, text="1", command=button_one_clicked)
+button_two = tk.Button(root, text="2", command=button_two_clicked)
+button_three = tk.Button(root, text="3", command=button_three_clicked)
+button_four = tk.Button(root, text="4", command=button_four_clicked)
+button_five = tk.Button(root, text="5", command=button_five_clicked)
+ 
+button_clear = tk.Button(root, text="Clear", command=clear)
+button_s.grid(row=1, column=0, padx=10, pady=10)
+button_u.grid(row=1, column=1, padx=10, pady=10)
+button_v.grid(row=1, column=2, padx=10, pady=10)
+button_a.grid(row=1, column=3, padx=10, pady=10)
+button_t.grid(row=1, column=4, padx=10, pady=10)
+
+button_one.grid(row=2, column=0, padx=10, pady=10)
+button_two.grid(row=2, column=1, padx=10, pady=10)
+button_three.grid(row=2, column=2, padx=10, pady=10)
+button_four.grid(row=2, column=3, padx=10, pady=10)
+button_five.grid(row=2, column=4, padx=10, pady=10)
+
+button_clear.grid(row=3, column=0, columnspan=5, padx=10, pady=10)
+label = tk.Label(root, text=text)
+label.grid(row=0, column=0, columnspan=10, padx=10, pady=10)
+#button.pack()
+# Draw a square
+# create_rectangle(x1, y1, x2, y2, options)
+buttons = {}
+#for i in range(9):
+ #   button = tk.Button(root, text=f"Button {i+1}")
+  #  button.grid(row=row, column=col, padx=10, pady=10)
+   # buttons[f"button_{i+1}"] = button
+
+
+def run():
+
+    root.mainloop()
+run()
