@@ -1,107 +1,200 @@
 import tkinter as tk
+import main as m
 
 # Create main window
 root = tk.Tk()
-root.title("Square Example")
-text = "o"
+root.title("Motion Calculator")
+root.geometry("300x400")
+text = ""
+
 # Create canvas
 #canvas = tk.Canvas(root, width=400, height=400, bg="white")
 #canvas.grid(row=1, column=0, columnspan=2, padx=10, pady=10)
 
 # Button click functions
+b = None
+info = {
+    "u": None,
+    "v": None,
+    "a": None,
+    "s": None,
+    "t": None
+}
+
+def collect():
+    if text == "":
+        return
+    info[b] = float(text[3:])
+    print(info)
+    update_var_display()  # Update the variable display
+
 def button_s_clicked():
-    global text
-    text = f"{text}S \n"
+    global text, b
+    collect()
+    text = f"S \n"
     label.config(text=text)
+    b = "s"
 
 def button_u_clicked():
-    global text
-    text = f"{text}U \n"
+    global text, b
+    collect()
+    text = f"U \n"
     label.config(text=text)
+    b = "u"
 
 def button_v_clicked():
-    global text
-    text = f"{text}V \n"
+    global text, b
+    collect()
+    text = f"V \n"
     label.config(text=text)
+    b = "v"
 
 def button_a_clicked():
+    global text, b
+    collect()
+    text = f"A \n"
+    label.config(text=text)
+    b="a"
+
+def numclick(n):
     global text
-    text = f"{text}A \n"
+    if text == "":
+        return
+    text = f"{text}{n}"
     label.config(text=text)
 
 def button_t_clicked():
-    global text
-    text = f"{text}T \n"
+    global text, b
+    collect()
+    text = f"T \n"
     label.config(text=text)
+    b = "t"
 
-def button_one_clicked():
-    global text
-    text = f"{text}1"
-    label.config(text=text)
-
-def button_two_clicked():
-    global text
-    text = f"{text}2"
-    label.config(text=text)
-
-def button_three_clicked():
-    global text
-    text = f"{text}3"
-    label.config(text=text)
-
-def button_four_clicked():
-    global text
-    text = f"{text}4"
-    label.config(text=text)
-
-def button_five_clicked():
-    global text
-    text = f"{text}5"
-    label.config(text=text)
 def clear():
     global text
     text = ""
     label.config(text=text)
 
-button_s = tk.Button(root, text="S", command=button_s_clicked)
-button_u = tk.Button(root, text="U", command=button_u_clicked)
-button_v = tk.Button(root, text="V", command=button_v_clicked)
-button_a = tk.Button(root, text="A", command=button_a_clicked)
-button_t = tk.Button(root, text="T", command=button_t_clicked)
+def add_decimal():
+    global text
+    if "." not in text:
+        text = f"{text}."
+        label.config(text=text)
 
-button_one = tk.Button(root, text="1", command=button_one_clicked)
-button_two = tk.Button(root, text="2", command=button_two_clicked)
-button_three = tk.Button(root, text="3", command=button_three_clicked)
-button_four = tk.Button(root, text="4", command=button_four_clicked)
-button_five = tk.Button(root, text="5", command=button_five_clicked)
- 
-button_clear = tk.Button(root, text="Clear", command=clear)
-button_s.grid(row=1, column=0, padx=10, pady=10)
-button_u.grid(row=1, column=1, padx=10, pady=10)
-button_v.grid(row=1, column=2, padx=10, pady=10)
-button_a.grid(row=1, column=3, padx=10, pady=10)
-button_t.grid(row=1, column=4, padx=10, pady=10)
+def add_negative():
+    global text
+    if "-" not in text:
+        text = text[0:3]+  "-" + text[3:]
+        label.config(text=text)
+    else:
+        text = text[0:2]+ text[3:]
+        label.config(text=text)
 
-button_one.grid(row=2, column=0, padx=10, pady=10)
-button_two.grid(row=2, column=1, padx=10, pady=10)
-button_three.grid(row=2, column=2, padx=10, pady=10)
-button_four.grid(row=2, column=3, padx=10, pady=10)
-button_five.grid(row=2, column=4, padx=10, pady=10)
 
-button_clear.grid(row=3, column=0, columnspan=5, padx=10, pady=10)
-label = tk.Label(root, text=text)
-label.grid(row=0, column=0, columnspan=10, padx=10, pady=10)
-#button.pack()
-# Draw a square
-# create_rectangle(x1, y1, x2, y2, options)
-buttons = {}
-#for i in range(9):
- #   button = tk.Button(root, text=f"Button {i+1}")
-  #  button.grid(row=row, column=col, padx=10, pady=10)
-   # buttons[f"button_{i+1}"] = button
+def backspace():
+    global text
+    if len(text) > 0:
+        text = text[:-1]
+        label.config(text=text)
 
+def add_sqrt():
+    global text
+    if text and text[-1:].replace('.', '').replace('-', '').isdigit():
+        try:
+            import math
+            value = float(text)
+            if value >= 0:
+                result = math.sqrt(value)
+                text = str(result)
+                label.config(text=text)
+        except:
+            pass
+
+def calc():
+    collect()
+    answer= m.solve_motion(s=info["s"], u=info["u"], v=info["v"], a=info["a"], t=info["t"])
+    print(answer)
+    label.config(text=answer)
+
+def reset():
+    global info
+    info = {
+        "u": None,
+        "v": None,
+        "a": None,
+        "s": None,
+        "t": None
+    }
+    label.config(text="")
+    update_var_display()  # Update the variable display
+
+button_s = tk.Button(root, text="S", command=button_s_clicked, width=4, height=2)
+button_u = tk.Button(root, text="U", command=button_u_clicked, width=4, height=2)
+button_v = tk.Button(root, text="V", command=button_v_clicked, width=4, height=2)
+button_a = tk.Button(root, text="A", command=button_a_clicked, width=4, height=2)
+button_t = tk.Button(root, text="T", command=button_t_clicked, width=4, height=2)
+
+button_one = tk.Button(root, text="1", command=lambda: numclick(1), width=4, height=2)
+button_two = tk.Button(root, text="2", command=lambda: numclick(2), width=4, height=2)
+button_three = tk.Button(root, text="3", command=lambda: numclick(3), width=4, height=2)
+button_four = tk.Button(root, text="4", command=lambda: numclick(4), width=4, height=2)
+button_five = tk.Button(root, text="5", command=lambda: numclick(5), width=4, height=2)
+button_six = tk.Button(root, text="6", command=lambda: numclick(6), width=4, height=2)
+button_seven = tk.Button(root, text="7", command=lambda: numclick(7), width=4, height=2)
+button_eight = tk.Button(root, text="8", command=lambda: numclick(8), width=4, height=2)
+button_nine = tk.Button(root, text="9", command=lambda: numclick(9), width=4, height=2)
+button_zero = tk.Button(root, text="0", command=lambda: numclick(0), width=4, height=2)
+button_decimal = tk.Button(root, text=".", command=add_decimal, width=4, height=2)
+button_negative = tk.Button(root, text="-", command=add_negative, width=4, height=2)
+button_backspace = tk.Button(root, text="←", command=backspace, width=4, height=2)
+button_sqrt = tk.Button(root, text="√", command=add_sqrt, width=4, height=2)
+button_clear = tk.Button(root, text="Clear", command=clear, width=8, height=2)
+button_calc = tk.Button(root, text="Calc", command=calc, width=8, height=2)
+button_reset = tk.Button(root, text="Reset", command=reset, width=8, height=2)
+
+button_s.grid(row=1, column=0, padx=2, pady=2)
+button_u.grid(row=1, column=1, padx=2, pady=2)
+button_v.grid(row=1, column=2, padx=2, pady=2)
+button_a.grid(row=1, column=3, padx=2, pady=2)
+button_t.grid(row=1, column=4, padx=2, pady=2)
+
+button_one.grid(row=2, column=0, padx=2, pady=2)
+button_two.grid(row=2, column=1, padx=2, pady=2)
+button_three.grid(row=2, column=2, padx=2, pady=2)
+button_four.grid(row=2, column=3, padx=2, pady=2)
+button_five.grid(row=2, column=4, padx=2, pady=2)
+
+button_six.grid(row=3, column=0, padx=2, pady=2)
+button_seven.grid(row=3, column=1, padx=2, pady=2)
+button_eight.grid(row=3, column=2, padx=2, pady=2)
+button_nine.grid(row=3, column=3, padx=2, pady=2)
+button_zero.grid(row=3, column=4, padx=2, pady=2)
+
+button_decimal.grid(row=4, column=0, padx=2, pady=2)
+button_negative.grid(row=4, column=1, padx=2, pady=2)
+button_backspace.grid(row=4, column=2, padx=2, pady=2)
+button_sqrt.grid(row=4, column=3, padx=2, pady=2)
+button_clear.grid(row=4, column=4, padx=2, pady=2)
+
+button_calc.grid(row=5, column=0, columnspan=2, padx=2, pady=2, sticky="ew")
+button_reset.grid(row=5, column=3, columnspan=2, padx=2, pady=2, sticky="ew")
+
+label = tk.Label(root, text=text, font=("Arial", 14, "bold"), bg="black", fg="white", height=2)
+label.grid(row=0, column=0, columnspan=6, padx=2, pady=2, sticky="ew")
+
+# Variable display at bottom
+var_display = tk.Label(root, text="", font=("Arial", 10), bg="lightgray", fg="black", height=2, relief="sunken", bd=1)
+var_display.grid(row=6, column=0, columnspan=5, padx=2, pady=2, sticky="ew")
+
+def update_var_display():
+    """Update the variable display with current values"""
+    display_text = ""
+    for var, value in info.items():
+        if value is not None:
+            display_text += f"{var.upper()}={value} "
+    var_display.config(text=display_text.strip())
 
 def run():
-
     root.mainloop()
+
 run()
